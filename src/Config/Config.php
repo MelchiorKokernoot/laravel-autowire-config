@@ -64,11 +64,6 @@ final class Config
         return $configValue;
     }
 
-    public static function mixed(string $key, mixed $default = null): mixed
-    {
-        return self::get($key, $default);
-    }
-
     private static function get(string $value, mixed $default = null): mixed
     {
         return config($value, $default);
