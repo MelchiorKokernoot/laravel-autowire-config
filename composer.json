@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "melchiorkokernoot/laravel-autowire-config",
+    "description": "Allows configuration injection through auto-wired constructor arguments",
     "keywords": [
-        ":vendor_name",
+        "MelchiorKokernoot",
         "laravel",
-        ":package_slug"
+        "laravel-autowire-config"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/melchiorkokernoot/laravel-autowire-config",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "MelchiorKokernoot",
+            "email": "melchiorkokernoot@gmail.com",
             "role": "Developer"
         }
     ],
@@ -35,13 +35,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "MelchiorKokernoot\\LaravelAutowireConfig\\": "src",
+            "MelchiorKokernoot\\LaravelAutowireConfig\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "MelchiorKokernoot\\LaravelAutowireConfig\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -61,10 +61,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "MelchiorKokernoot\\LaravelAutowireConfig\\LaravelAutowireConfigServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "LaravelAutowireConfig": "MelchiorKokernoot\\LaravelAutowireConfig\\Facades\\LaravelAutowireConfig"
             }
         }
     },

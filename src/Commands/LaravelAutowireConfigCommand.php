@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace MelchiorKokernoot\LaravelAutowireConfig\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelAutowireConfigCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-autowire-config';
 
     public $description = 'My command';
 
