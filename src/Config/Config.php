@@ -10,6 +10,9 @@ use function config;
 
 final class Config
 {
+    /**
+     * @return array<mixed> The shape of the array is not known, so we use mixed
+     */
     public static function array(string $key): array
     {
         $configValue = self::get($key);
@@ -19,6 +22,9 @@ final class Config
         return $configValue;
     }
 
+    /**
+     * @return array<mixed> The shape of the array is not known, so we use mixed
+     */
     public static function arrayOrNull(string $key): ?array
     {
         $configValue = self::get($key);
@@ -44,6 +50,15 @@ final class Config
         Assert::numeric($configValue);
 
         return (int) $configValue;
+    }
+
+    public static function integerOrNull(string $key): ?int
+    {
+        $configValue = self::get($key);
+
+        Assert::nullOrInteger($configValue);
+
+        return $configValue;
     }
 
     public static function string(string $key, string $default = ''): string

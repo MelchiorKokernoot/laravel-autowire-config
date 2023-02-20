@@ -7,10 +7,10 @@ namespace MelchiorKokernoot\LaravelAutowireConfig\Config\Types;
 use MelchiorKokernoot\LaravelAutowireConfig\Config\Config;
 use MelchiorKokernoot\LaravelAutowireConfig\Config\ConfigValueWrapper;
 
-class BooleanConfig extends ConfigValueWrapper
+class NullableIntegerConfig extends ConfigValueWrapper
 {
-    public function value(): bool
+    public function value(): ?int
     {
-        return Config::boolean($this->key);
+        return Config::integerOrNull($this->key);
     }
 }
