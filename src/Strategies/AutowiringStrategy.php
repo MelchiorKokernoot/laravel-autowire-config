@@ -11,7 +11,7 @@ use ReflectionProperty;
 
 abstract class AutowiringStrategy
 {
-    abstract public function wire(object $instance, ReflectionClass $reflection): void;
+    abstract public function wire(AutowiresConfigs $instance, ReflectionClass $reflection): void;
 
     /**
      * @param mixed $value Mixed because it could be any valid config value

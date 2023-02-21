@@ -13,3 +13,4 @@ parameters:
     editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
     checkModelProperties: true
     checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false

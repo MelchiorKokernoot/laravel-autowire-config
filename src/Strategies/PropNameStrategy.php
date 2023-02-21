@@ -6,6 +6,7 @@ namespace MelchiorKokernoot\LaravelAutowireConfig\Strategies;
 
 use Illuminate\Support\Str;
 use MelchiorKokernoot\LaravelAutowireConfig\Config\ConfigValueWrapper;
+use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
 use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionParameter;
@@ -14,9 +15,13 @@ use function is_subclass_of;
 
 class PropNameStrategy extends AutowiringStrategy
 {
-    public function wire(object $instance, ReflectionClass $reflection): void
+    public function wire(AutowiresConfigs $instance, ReflectionClass $reflection): void
     {
-        foreach ($reflection->getConstructor()?->getParameters() as $parameter) {
+        if ($reflection->getConstructor() === null) {
+            return;
+        }
+
+        foreach ($reflection->getConstructor()->getParameters() as $parameter) {
             $type = $parameter->getType();
 
             if (!($type instanceof ReflectionNamedType)) {
