@@ -1,0 +1,15 @@
+parameters:
+    paths:
+        - .
+    excludePaths:
+        - bootstrap/cache
+        - node_modules/
+        - public/css
+        - public/js
+        - storage/
+        - vendor/
+        - tests/
+    level: max
+    editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
+    checkModelProperties: true
+    checkMissingIterableValueType: false
