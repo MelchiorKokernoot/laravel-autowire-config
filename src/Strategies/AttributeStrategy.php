@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace MelchiorKokernoot\LaravelAutowireConfig\Strategies;
 
 use MelchiorKokernoot\LaravelAutowireConfig\Config\ConfigValueWrapper;
+use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionParameter;
 use RuntimeException;
 use function count;
 use function is_subclass_of;
@@ -16,7 +18,7 @@ class AttributeStrategy extends AutowiringStrategy
     /**
      * @throws ReflectionException
      */
-    public function wire(object $instance, ReflectionClass $reflection): void
+    public function wire(AutowiresConfigs $instance, ReflectionClass $reflection): void
     {
         if ($reflection->getConstructor() === null) {
             return;
@@ -33,10 +35,7 @@ class AttributeStrategy extends AutowiringStrategy
         }
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    private function getParameterValue(mixed $parameter): mixed
+    private function getParameterValue(ReflectionParameter $parameter): mixed
     {
         foreach ($parameter->getAttributes() as $attribute) {
             if (!is_subclass_of($attribute->getName(), ConfigValueWrapper::class)) {
