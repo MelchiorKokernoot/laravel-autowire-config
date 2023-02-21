@@ -1,25 +1,27 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MelchiorKokernoot\LaravelAutowireConfig\Tests;
 
-use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\ArrayConfig;
-use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\BooleanConfig;
-use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\IntegerConfig;
-use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\NullableArrayConfig;
-use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\NullableIntegerConfig;
-use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\NullableStringConfig;
-use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\StringConfig;
-use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
+use MelchiorKokernoot\LaravelAutowireConfig\Strategies\PropNameStrategy;
+use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DependencyWithNoConstructorArguments;
+use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DummyClass;
+use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DummyDependency;
+use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NonTypedDummyClass;
+use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NullableDummyClass;
 use RuntimeException;
 use Webmozart\Assert\InvalidArgumentException;
-use function app;
-use function config;
 
-class AutoWireableConfigTest extends TestCase
+class PropertyNameAutowireTest extends TestCase
 {
-    public function testItInjectsTheConfigBasedOnConstructorArgumentNames(): void
+    protected function setUp(): void
+    {
+        parent::setUp();
+        config()->set([
+            'autowire-configs.strategy' => PropNameStrategy::class
+        ]);
+    }
+
+    public function testItInjectsTheConfigBasedOnConstructorArgumentAttributes(): void
     {
         config()->set([
             'app.name' => 'nice-app',
@@ -147,59 +149,4 @@ class AutoWireableConfigTest extends TestCase
         $dummy = app(DependencyWithNoConstructorArguments::class);
         $this->assertInstanceOf(DependencyWithNoConstructorArguments::class, $dummy);
     }
-}
-
-// phpcs:ignore
-class DummyClass implements AutowiresConfigs
-{
-    public function __construct(
-        private StringConfig   $appName,
-        public StringConfig    $fooBar,
-        public IntegerConfig   $testInteger,
-        public ArrayConfig     $fooArray,
-        public BooleanConfig   $testBoolean,
-        public DummyDependency $dummyDependency,
-    )
-    {
-    }
-
-    public function getAppName(): string
-    {
-        return $this->appName->value();
-    }
-}
-
-// phpcs:ignore
-class NullableDummyClass implements AutowiresConfigs
-{
-    public function __construct(
-        public NullableStringConfig  $fooString,
-        public NullableArrayConfig   $fooArray,
-        public NullableIntegerConfig $fooInt,
-    )
-    {
-    }
-}
-
-// phpcs:ignore
-class NonTypedDummyClass implements AutowiresConfigs
-{
-    public function __construct(
-        public $fooBar = 'default',
-    )
-    {
-    }
-}
-
-// phpcs:ignore
-class DependencyWithNoConstructorArguments implements AutowiresConfigs
-{
-    public function __construct()
-    {
-    }
-}
-
-// phpcs:ignore
-class DummyDependency
-{
 }
