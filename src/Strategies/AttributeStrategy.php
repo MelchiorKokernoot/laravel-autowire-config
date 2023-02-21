@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace MelchiorKokernoot\LaravelAutowireConfig\Strategies;
 
 use MelchiorKokernoot\LaravelAutowireConfig\Config\ConfigValueWrapper;
+use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionNamedType;
+use ReflectionParameter;
 use RuntimeException;
 
 use function count;
@@ -17,10 +20,14 @@ class AttributeStrategy extends AutowiringStrategy
     /**
      * @throws ReflectionException
      */
-    public function wire(object $instance, ReflectionClass $reflection): void
+    public function wire(AutowiresConfigs $instance, ReflectionClass $reflection): void
     {
-        foreach ($reflection->getConstructor()?->getParameters() as $parameter) {
-            $value = $this->getParameterValue($parameter);
+        if ($reflection->getConstructor() === null) {
+            return;
+        }
+
+        foreach ($reflection->getConstructor()->getParameters() as $parameter) {
+            $value = $this->getPropertyValue($parameter);
 
             if ($value === null) {
                 continue;
@@ -30,10 +37,7 @@ class AttributeStrategy extends AutowiringStrategy
         }
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    private function getParameterValue(mixed $parameter): mixed
+    private function getPropertyValue(ReflectionParameter $parameter): mixed
     {
         foreach ($parameter->getAttributes() as $attribute) {
             if (!is_subclass_of($attribute->getName(), ConfigValueWrapper::class)) {
@@ -44,8 +48,13 @@ class AttributeStrategy extends AutowiringStrategy
                 throw new RuntimeException('ConfigValueWrapper attribute must have exactly one argument');
             }
 
+            if (!$parameter->getType() instanceof ReflectionNamedType) {
+                continue;
+            }
+
             $configKey = $attribute->getArguments()[0];
-            $configValueWrapperName = $parameter->getType()?->getName();
+            $configValueWrapperName = $parameter->getType()->getName();
+
             return new $configValueWrapperName($configKey);
         }
 
