@@ -27,7 +27,7 @@ composer require melchiorkokernoot/laravel-autowire-config
 ## Usage
 
 Firstly, implement the `AutowireConfig` interface on your service provider.
-Typehint one of the following config classes in your constructor, and use the camelCase version of the config key as the
+Typehint one of the typed config classes in your constructor, and use the camelCase version of the config key as the
 property name.
 
 ```php
@@ -48,7 +48,17 @@ $foo = new Foo(config('app.name'));
 The benefit of this, is that you keep a clear separation between your application logic and your configuration layer.
 No more service locators, no more `config()` calls in your code, just clean dependencies.
 
+## Typed config classes
 
+The following config classes are available:
+
+- `ArrayConfig`
+- `BooleanConfig`
+- `IntegerConfig`
+- `NullableArrayConfig`
+- `NullableIntegerConfig`
+- `NullableStringConfig`
+- `StringConfig`
 
 ## Testing
 
