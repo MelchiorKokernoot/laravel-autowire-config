@@ -16,11 +16,17 @@ class LaravelAutowireConfigServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/autowire-configs.php', 'autowire-configs');
+        $this->mergeConfigFrom(__DIR__ . '/../config/autowire-configs.php', 'config');
     }
 
     public function boot(): void
     {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/autowire-configs.php' => config_path('autowire-configs.php'),
+            ], 'config');
+        }
+
         $this->app->afterResolving(AutowiresConfigs::class, static function (object|string $object, $app): void {
             Assert::isInstanceOf($object, AutowiresConfigs::class);
             $reflection = new ReflectionClass($object);
