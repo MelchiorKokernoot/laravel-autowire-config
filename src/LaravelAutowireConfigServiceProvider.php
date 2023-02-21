@@ -11,20 +11,21 @@ use ReflectionClass;
 use Webmozart\Assert\Assert;
 
 use function config;
+use function config_path;
 
 class LaravelAutowireConfigServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/autowire-configs.php', 'config');
+        $this->mergeConfigFrom(__DIR__ . '/../config/autowire-configs.php', 'autowire-config');
     }
 
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/autowire-configs.php' => config_path('autowire-configs.php'),
-            ], 'config');
+                __DIR__ . '/../config/autowire-configs.php' => config_path('autowire-configs.php'),
+            ], 'autowire-configs');
         }
 
         $this->app->afterResolving(AutowiresConfigs::class, static function (object|string $object, $app): void {
