@@ -24,19 +24,75 @@ You can install the package via composer:
 composer require melchiorkokernoot/laravel-autowire-config
 ```
 
+## Configuration
+
+The package will automatically register itself.
+You can publish the config file with:
+
+```bash
+php artisan vendor:publish --provider="MelchiorKokernoot\LaravelAutowireConfig\LaravelAutowireConfigServiceProvider"
+```
+
+This is the contents of the published config file:
+
+```php
+return [
+    //Either AttributeStrategy::class  or AutowiredPropNameStrategy::class
+    'strategy' => PropNameStrategy::class,
+];
+```
+
+You can choose between two strategies:
+
+- `AttributeStrategy` : Uses attributes to inject the config value.
+- `PropNameStrategy` (default): Uses constructor promoted property names to inject the config values.
+
+More on the strategies below.
+
 ## Usage
 
-Firstly, implement the `AutowireConfig` interface on your service provider.
-Typehint one of the typed config classes in your constructor, and use the camelCase version of the config key as the
+Starting from Version 2.0.0 the package can be used in two ways:
+
+### Usage through attribute autowiring (AttributeStrategy)
+
+Firstly, implement the `AutowiresConfigs` interface on your class.
+Typehint one of the [typed config classes](#typed-config-classes) in your constructor, and use that typehint as an
+attribute on the property, finally pass the config key as the attribute value.
+
+```php
+class Foo implements AutowiresConfigs{
+    public function __construct(
+        #[StringConfig('app.name')]
+        public $appName,
+    ){}
+}
+```
+
+> Note you do not have to name the variable to match the config key now.
+
+When using this class from the container (through dependency injection e.g.), the config value will be injected as if
+you do this:
+
+```php
+$foo = new Foo(config('app.name'));
+```
+
+### Usage through constructor property name autowiring (PropNameStrategy)
+
+Firstly, implement the `AutowiresConfigs` interface on your class.
+Typehint one of the [typed config classes](#typed-config-classes) in your constructor, and use the camelCase version of
+the config key as the
 property name.
 
 ```php
-class Foo implements AutowireConfig{
+class Foo implements AutowiresConfigs{
     public function __construct(
         public StringConfig $appName,
     ){}
 }
 ```
+
+> You need to match the config key to the property name, so `app.name` will become `appName`.
 
 When using this class from the container (through dependency injection e.g.), the config value will be injected as if
 you do this:

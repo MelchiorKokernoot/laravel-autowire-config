@@ -6,7 +6,6 @@ namespace MelchiorKokernoot\LaravelAutowireConfig\Tests;
 
 use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\StringConfig;
 use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
-use MelchiorKokernoot\LaravelAutowireConfig\LaravelAutowireConfig;
 use MelchiorKokernoot\LaravelAutowireConfig\Strategies\AttributeStrategy;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DependencyWithNoConstructorArguments;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DummyClassAttributes;
@@ -56,7 +55,7 @@ class AttributeAutowireTest extends TestCase
         $this->assertEquals(['foo' => 'bar'], $dummy->fooArray->value());
     }
 
-    public function testNullableArray()
+    public function testNullableArray(): void
     {
         config()->set([
             'foo.array' => null
@@ -66,7 +65,7 @@ class AttributeAutowireTest extends TestCase
         $this->assertNull($dummy->fooArray->value());
     }
 
-    public function testShorthandValueGetter()
+    public function testShorthandValueGetter(): void
     {
         config()->set([
             'foo.array' => [
@@ -150,7 +149,7 @@ class AttributeAutowireTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('ConfigValueWrapper attribute must have exactly one argument');
 
-        $dummy = app(DummyClassMultipleArgsAttribute::class);
+        app(DummyClassMultipleArgsAttribute::class);
     }
 
     public function testItSkipsUnTypedArguments(): void
@@ -174,7 +173,7 @@ class AttributeAutowireTest extends TestCase
 class DummyClassMultipleArgsAttribute implements AutowiresConfigs{
     public function __construct(
         #[StringConfig('foo.bar','baz')]
-        public StringConfig $fooBar
+        public StringConfig $thisCanBeAnythingNow
     ) {
     }
 }
