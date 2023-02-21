@@ -9,6 +9,7 @@ use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
 use MelchiorKokernoot\LaravelAutowireConfig\Strategies\PropNameStrategy;
 use ReflectionClass;
 
+use Webmozart\Assert\Assert;
 use function config;
 
 class LaravelAutowireConfigServiceProvider extends ServiceProvider
@@ -21,6 +22,7 @@ class LaravelAutowireConfigServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->afterResolving(AutowiresConfigs::class, static function (object|string $object, $app): void {
+            Assert::isInstanceOf($object, AutowiresConfigs::class);
             $reflection = new ReflectionClass($object);
             $reflectionParameters = $reflection->getConstructor()?->getParameters();
 

@@ -8,7 +8,6 @@ use MelchiorKokernoot\LaravelAutowireConfig\Config\ConfigValueWrapper;
 use ReflectionClass;
 use ReflectionException;
 use RuntimeException;
-
 use function count;
 use function is_subclass_of;
 
@@ -19,7 +18,11 @@ class AttributeStrategy extends AutowiringStrategy
      */
     public function wire(object $instance, ReflectionClass $reflection): void
     {
-        foreach ($reflection->getConstructor()?->getParameters() as $parameter) {
+        if ($reflection->getConstructor() === null) {
+            return;
+        }
+
+        foreach ($reflection->getConstructor()->getParameters() as $parameter) {
             $value = $this->getParameterValue($parameter);
 
             if ($value === null) {
