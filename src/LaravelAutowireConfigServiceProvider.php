@@ -8,8 +8,8 @@ use Illuminate\Support\ServiceProvider;
 use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
 use MelchiorKokernoot\LaravelAutowireConfig\Strategies\PropNameStrategy;
 use ReflectionClass;
-
 use Webmozart\Assert\Assert;
+
 use function config;
 
 class LaravelAutowireConfigServiceProvider extends ServiceProvider

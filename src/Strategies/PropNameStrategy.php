@@ -17,7 +17,7 @@ class PropNameStrategy extends AutowiringStrategy
 {
     public function wire(AutowiresConfigs $instance, ReflectionClass $reflection): void
     {
-        if($reflection->getConstructor() === null) {
+        if ($reflection->getConstructor() === null) {
             return;
         }
 
