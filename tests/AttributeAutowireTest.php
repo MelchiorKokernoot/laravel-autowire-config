@@ -14,19 +14,12 @@ use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NonTypedDummyClass;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NullableDummyClass;
 use RuntimeException;
 use Webmozart\Assert\InvalidArgumentException;
+
 use function app;
 use function config;
 
 class AttributeAutowireTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        config()->set([
-            'autowire-configs.strategy' => AttributeStrategy::class
-        ]);
-    }
-
     public function testItInjectsTheConfigBasedOnConstructorArgumentAttributes(): void
     {
         config()->set([
@@ -58,7 +51,7 @@ class AttributeAutowireTest extends TestCase
     public function testNullableArray(): void
     {
         config()->set([
-            'foo.array' => null
+            'foo.array' => null,
         ]);
 
         $dummy = app(NullableDummyClass::class);
@@ -94,9 +87,9 @@ class AttributeAutowireTest extends TestCase
         $this->expectExceptionMessage('Expected a string. Got: NULL');
         $dummy = app(DummyClassAttributes::class);
 
-        $this->assertEquals('', (string)$dummy->fooBar);
+        $this->assertEquals('', (string) $dummy->fooBar);
         $this->assertEquals(1, $dummy->testInteger->value());
-        $this->assertEquals('1', (string)$dummy->testInteger);
+        $this->assertEquals('1', (string) $dummy->testInteger);
     }
 
     public function testItThrowsARuntimeExceptionWhenTryingToCastArrayToString(): void
@@ -135,9 +128,9 @@ class AttributeAutowireTest extends TestCase
         ]);
 
         $dummy = app(NullableDummyClass::class);
-        $this->assertEquals('', (string)$dummy->fooString);
-        $this->assertEquals('', (string)$dummy->fooArray);
-        $this->assertEquals('', (string)$dummy->fooInt);
+        $this->assertEquals('', (string) $dummy->fooString);
+        $this->assertEquals('', (string) $dummy->fooArray);
+        $this->assertEquals('', (string) $dummy->fooInt);
     }
 
     public function testItThrowsAnExceptionWithMultipleAttributeArgs(): void
@@ -167,13 +160,22 @@ class AttributeAutowireTest extends TestCase
         $dummy = app(DependencyWithNoConstructorArguments::class);
         $this->assertInstanceOf(DependencyWithNoConstructorArguments::class, $dummy);
     }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set([
+            'autowire-configs.strategy' => AttributeStrategy::class,
+        ]);
+    }
 }
 
 //phpcs:ignore
 class DummyClassMultipleArgsAttribute implements AutowiresConfigs{
     public function __construct(
-        #[StringConfig('foo.bar','baz')]
-        public StringConfig $thisCanBeAnythingNow
+        #[StringConfig('foo.bar', 'baz')]
+        public StringConfig $thisCanBeAnythingNow,
     ) {
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MelchiorKokernoot\LaravelAutowireConfig\Config;
 
 use RuntimeException;
+
 use function is_bool;
 use function is_null;
 use function is_numeric;
@@ -12,13 +13,14 @@ use function is_string;
 
 abstract class ConfigValueWrapper
 {
+    private const V = 'v';
+
     public readonly mixed $v;
 
     public function __construct(
         protected readonly string $key = '',
     )
     {
-        $this->v = $this->value();
     }
 
     abstract public function value(): mixed;
@@ -41,5 +43,17 @@ abstract class ConfigValueWrapper
             is_null($value) => '',
             default => throw new RuntimeException('Cannot convert value to string'),
         };
+    }
+
+    /**
+     * @unused array $arguments
+     */
+    public function __call(string $name, array $arguments): mixed
+    {
+        if ($name !== self::V) {
+            return;
+        }
+
+        return $this->value();
     }
 }

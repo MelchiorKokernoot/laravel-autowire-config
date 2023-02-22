@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures;
 
 use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\ArrayConfig;
@@ -12,15 +14,15 @@ class DummyClassAttributes implements AutowiresConfigs
 {
     public function __construct(
         #[StringConfig('app.name')]
-        private StringConfig   $appName,
+        private StringConfig $appName,
         #[StringConfig('foo.bar')]
-        public StringConfig    $fooBar,
+        public StringConfig $fooBar,
         #[IntegerConfig('test.integer')]
-        public IntegerConfig   $testInteger,
+        public IntegerConfig $testInteger,
         #[ArrayConfig('foo.array')]
-        public ArrayConfig     $fooArray,
+        public ArrayConfig $fooArray,
         #[BooleanConfig('test.boolean')]
-        public BooleanConfig   $testBoolean,
+        public BooleanConfig $testBoolean,
         public DummyDependency $dummyDependency,
     )
     {

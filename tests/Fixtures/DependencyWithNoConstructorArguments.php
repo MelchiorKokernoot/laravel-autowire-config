@@ -1,10 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures;
 
-use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\NullableArrayConfig;
-use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\NullableIntegerConfig;
-use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\NullableStringConfig;
 use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
 
 class DependencyWithNoConstructorArguments implements AutowiresConfigs

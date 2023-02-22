@@ -6,6 +6,7 @@ namespace MelchiorKokernoot\LaravelAutowireConfig\Tests;
 
 use MelchiorKokernoot\LaravelAutowireConfig\LaravelAutowireConfigServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+
 use function config;
 
 class TestCase extends Orchestra
