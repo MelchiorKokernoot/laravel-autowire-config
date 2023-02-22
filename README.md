@@ -63,12 +63,13 @@ attribute on the property, finally pass the config key as the attribute value.
 class Foo implements AutowiresConfigs{
     public function __construct(
         #[StringConfig('app.name')]
-        public $appName,
+        public StringConfig $appName,
     ){}
 }
 ```
 
-> Note you do not have to name the variable to match the config key now.
+> Note you do not have to name the variable to match the config key now, but you still have to type-hint the config
+> class.
 
 When using this class from the container (through dependency injection e.g.), the config value will be injected as if
 you do this:
@@ -121,6 +122,9 @@ The following config classes are available:
 ```bash
 composer test
 ```
+
+## Roadmap
+- [ ] Add support for primitive types when using attribute autowiring
 
 ## Changelog
 
