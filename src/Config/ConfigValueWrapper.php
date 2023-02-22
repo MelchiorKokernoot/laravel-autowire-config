@@ -11,11 +11,12 @@ use function is_null;
 use function is_numeric;
 use function is_string;
 
+/**
+ * @property-read mixed $v
+ */
 abstract class ConfigValueWrapper
 {
     private const V = 'v';
-
-    public readonly mixed $v;
 
     public function __construct(
         protected readonly string $key = '',
