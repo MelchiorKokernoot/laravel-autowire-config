@@ -9,7 +9,7 @@
 Enable laravel configuration injection through auto-wired constructor arguments.
 
 ```php
-class Foo{
+class Foo implements AutowiresConfigs{
     public function __construct(
         public StringConfig $appName,
     ){}
