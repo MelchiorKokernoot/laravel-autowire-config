@@ -52,7 +52,7 @@ abstract class ConfigValueWrapper
     public function __call(string $name, array $arguments): mixed
     {
         if ($name !== self::V) {
-            return;
+            return null;
         }
 
         return $this->value();
