@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MelchiorKokernoot\LaravelAutowireConfig\Config;
 
 use RuntimeException;
-
 use function is_bool;
 use function is_null;
 use function is_numeric;
@@ -13,10 +12,13 @@ use function is_string;
 
 abstract class ConfigValueWrapper
 {
+    public readonly mixed $v;
+
     public function __construct(
         protected readonly string $key = '',
     )
     {
+        $this->v = $this->value();
     }
 
     abstract public function value(): mixed;

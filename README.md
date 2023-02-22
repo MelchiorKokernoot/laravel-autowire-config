@@ -105,6 +105,35 @@ $foo = new Foo(config('app.name'));
 The benefit of this, is that you keep a clear separation between your application logic and your configuration layer.
 No more service locators, no more `config()` calls in your code, just clean dependencies.
 
+## Accessing the config values
+
+Because the config values are wrapped in a typed config class, you cannot access the value directly. Instead, you can
+access the value through the `value` method. For convenience, the `__toString` magic method is also implemented, so you
+can use the config value as a string (in the case of a value that can be casted to a string,of course) directly.
+Furthermore, the shorthands `$object->config->v()`and `$object->config->v()` are also available for accessing the value.
+
+```php
+class Foo implements AutowiresConfigs{
+    public function __construct(
+        public StringConfig $appName,
+    ){}
+
+    public function bar(){
+        //Casting to string
+        (string) $this->appName
+        
+        //Shorthand method call
+        $this->appName->value->v();
+        
+        //Shorthand property access
+        $this->appName->value->v;
+        
+        //Ordinary method call
+        return $this->appName->value();
+    }
+}
+```
+
 ## Typed config classes
 
 The following config classes are available:
@@ -117,6 +146,12 @@ The following config classes are available:
 - `NullableStringConfig`
 - `StringConfig`
 
+## Pitfalls
+
+This package hooks into the afterResolving callback, which means that it will only work for classes that are resolved
+through the container. This that the config values will only be populated after the constructor has been called, so the
+values will not be available in the constructor.
+
 ## Testing
 
 ```bash
@@ -124,7 +159,9 @@ composer test
 ```
 
 ## Roadmap
+
 - [ ] Add support for primitive types when using attribute autowiring
+- [ ] Add support for configuring the way values should be unwrapped (disable shorthand `v()` for example)
 
 ## Changelog
 
