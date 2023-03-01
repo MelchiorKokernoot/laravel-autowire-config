@@ -17,6 +17,7 @@ class PropNameStrategy extends AutowiringStrategy
 {
     public function wire(AutowiresConfigs $instance, ReflectionClass $reflection): void
     {
+        /** @phpstan-ignore-next-line because $reflection->getConstructor has already evaluated to not null here*/
         foreach ($reflection->getConstructor()?->getParameters() as $parameter) {
             $type = $parameter->getType();
 
