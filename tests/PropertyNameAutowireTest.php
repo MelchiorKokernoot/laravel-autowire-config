@@ -12,7 +12,6 @@ use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NonTypedDummyClass;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NullableDummyClass;
 use RuntimeException;
 use Webmozart\Assert\InvalidArgumentException;
-
 use function app;
 use function config;
 
@@ -85,9 +84,9 @@ class PropertyNameAutowireTest extends TestCase
         $this->expectExceptionMessage('Expected a string. Got: NULL');
         $dummy = app(DummyClass::class);
 
-        $this->assertEquals('', (string) $dummy->fooBar);
+        $this->assertEquals('', (string)$dummy->fooBar);
         $this->assertEquals(1, $dummy->testInteger->value());
-        $this->assertEquals('1', (string) $dummy->testInteger);
+        $this->assertEquals('1', (string)$dummy->testInteger);
     }
 
     public function testItThrowsARuntimeExceptionWhenTryingToCastArrayToString(): void
@@ -126,9 +125,9 @@ class PropertyNameAutowireTest extends TestCase
         ]);
 
         $dummy = app(NullableDummyClass::class);
-        $this->assertEquals('', (string) $dummy->fooString);
-        $this->assertEquals('', (string) $dummy->fooArray);
-        $this->assertEquals('', (string) $dummy->fooInt);
+        $this->assertEquals('', (string)$dummy->fooString);
+        $this->assertEquals('', (string)$dummy->fooArray);
+        $this->assertEquals('', (string)$dummy->fooInt);
     }
 
     public function testItSkipsUnTypedArguments(): void
@@ -146,6 +145,7 @@ class PropertyNameAutowireTest extends TestCase
         $dummy = app(DependencyWithNoConstructorArguments::class);
         $this->assertInstanceOf(DependencyWithNoConstructorArguments::class, $dummy);
     }
+
 
     protected function setUp(): void
     {

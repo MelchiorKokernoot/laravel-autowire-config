@@ -20,6 +20,15 @@ use function config;
 
 class AttributeAutowireTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set([
+            'autowire-configs.strategy' => AttributeStrategy::class,
+        ]);
+    }
+
     public function testItInjectsTheConfigBasedOnConstructorArgumentAttributes(): void
     {
         config()->set([
@@ -159,15 +168,6 @@ class AttributeAutowireTest extends TestCase
     {
         $dummy = app(DependencyWithNoConstructorArguments::class);
         $this->assertInstanceOf(DependencyWithNoConstructorArguments::class, $dummy);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        config()->set([
-            'autowire-configs.strategy' => AttributeStrategy::class,
-        ]);
     }
 }
 

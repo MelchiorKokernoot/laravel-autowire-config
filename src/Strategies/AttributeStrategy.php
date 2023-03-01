@@ -11,7 +11,6 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionParameter;
 use RuntimeException;
-
 use function count;
 use function is_subclass_of;
 
@@ -22,11 +21,7 @@ class AttributeStrategy extends AutowiringStrategy
      */
     public function wire(AutowiresConfigs $instance, ReflectionClass $reflection): void
     {
-        if ($reflection->getConstructor() === null) {
-            return;
-        }
-
-        foreach ($reflection->getConstructor()->getParameters() as $parameter) {
+        foreach ($reflection->getConstructor()?->getParameters() as $parameter) {
             $value = $this->getPropertyValue($parameter);
 
             if ($value === null) {

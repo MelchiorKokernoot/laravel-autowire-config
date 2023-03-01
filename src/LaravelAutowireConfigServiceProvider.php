@@ -33,7 +33,7 @@ class LaravelAutowireConfigServiceProvider extends ServiceProvider
             $reflection = new ReflectionClass($object);
             $reflectionParameters = $reflection->getConstructor()?->getParameters();
 
-            if ($reflectionParameters === null || $reflectionParameters === []) {
+            if ($reflectionParameters === null || $reflectionParameters === [] || $reflection->getConstructor() === null) {
                 return;
             }
 
