@@ -20,8 +20,7 @@ abstract class ConfigValueWrapper
 
     public function __construct(
         protected readonly string $key = '',
-    )
-    {
+    ) {
     }
 
     abstract public function value(): mixed;

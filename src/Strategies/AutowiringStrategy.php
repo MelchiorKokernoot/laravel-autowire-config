@@ -20,8 +20,7 @@ abstract class AutowiringStrategy
         AutoWiresConfigs $object,
         ReflectionProperty $propertyToSet,
         mixed $value,
-    ): void
-    {
+    ): void {
         $valueSetterClosure = $this->bindClosure($object, $propertyToSet->getName());
         $valueSetterClosure($value);
     }

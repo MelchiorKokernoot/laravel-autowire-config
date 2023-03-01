@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MelchiorKokernoot\LaravelAutowireConfig\Tests;
 
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DummyClass;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NullableDummyClass;
+
+use function app;
+use function config;
 
 class ValueAccessTest extends TestCase
 {

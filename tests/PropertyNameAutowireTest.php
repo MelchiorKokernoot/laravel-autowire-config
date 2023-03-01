@@ -12,6 +12,7 @@ use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NonTypedDummyClass;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NullableDummyClass;
 use RuntimeException;
 use Webmozart\Assert\InvalidArgumentException;
+
 use function app;
 use function config;
 
@@ -19,12 +20,14 @@ class PropertyNameAutowireTest extends TestCase
 {
     public function testItInjectsTheConfigBasedOnConstructorArgumentAttributes(): void
     {
-        config()->set([
-            'app.name' => 'nice-app',
-            'foo.bar' => 'baz',
-            'test.integer' => 1,
-            'test.boolean' => true,
-        ]);
+        config()->set(
+            [
+                'app.name' => 'nice-app',
+                'foo.bar' => 'baz',
+                'test.integer' => 1,
+                'test.boolean' => true,
+            ],
+        );
 
         $dummy = app(DummyClass::class);
         $this->assertEquals('nice-app', $dummy->getAppName());
@@ -35,11 +38,13 @@ class PropertyNameAutowireTest extends TestCase
 
     public function testItReturnsAnArrayWhenUsingArrayConfigTypeHint(): void
     {
-        config()->set([
-            'foo.array' => [
-                'foo' => 'bar',
+        config()->set(
+            [
+                'foo.array' => [
+                    'foo' => 'bar',
+                ],
             ],
-        ]);
+        );
 
         $dummy = app(DummyClass::class);
         $this->assertEquals(['foo' => 'bar'], $dummy->fooArray->value());
@@ -47,9 +52,11 @@ class PropertyNameAutowireTest extends TestCase
 
     public function testNullableArray(): void
     {
-        config()->set([
-            'foo.array' => null,
-        ]);
+        config()->set(
+            [
+                'foo.array' => null,
+            ],
+        );
 
         $dummy = app(NullableDummyClass::class);
         $this->assertNull($dummy->fooArray->value());
@@ -57,11 +64,13 @@ class PropertyNameAutowireTest extends TestCase
 
     public function testShorthandValueGetter(): void
     {
-        config()->set([
-            'foo.array' => [
-                'foo' => 'bar',
+        config()->set(
+            [
+                'foo.array' => [
+                    'foo' => 'bar',
+                ],
             ],
-        ]);
+        );
 
         $dummy = app(DummyClass::class);
         $this->assertEquals(['foo' => 'bar'], $dummy->fooArray->v());
@@ -75,27 +84,31 @@ class PropertyNameAutowireTest extends TestCase
 
     public function testItThrowsAnExceptionWhenStringConfigTypeIsNull(): void
     {
-        config()->set([
-            'foo.bar' => null,
-            'test.integer' => 1,
-        ]);
+        config()->set(
+            [
+                'foo.bar' => null,
+                'test.integer' => 1,
+            ],
+        );
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected a string. Got: NULL');
         $dummy = app(DummyClass::class);
 
-        $this->assertEquals('', (string)$dummy->fooBar);
+        $this->assertEquals('', (string) $dummy->fooBar);
         $this->assertEquals(1, $dummy->testInteger->value());
-        $this->assertEquals('1', (string)$dummy->testInteger);
+        $this->assertEquals('1', (string) $dummy->testInteger);
     }
 
     public function testItThrowsARuntimeExceptionWhenTryingToCastArrayToString(): void
     {
-        config()->set([
-            'foo.array' => [
-                'foo' => 'bar',
+        config()->set(
+            [
+                'foo.array' => [
+                    'foo' => 'bar',
+                ],
             ],
-        ]);
+        );
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Cannot convert value to string');
@@ -105,11 +118,13 @@ class PropertyNameAutowireTest extends TestCase
 
     public function testItDoesNotThrowAnExceptionWhenAccessingTheValueUnwrapperOnArray(): void
     {
-        config()->set([
-            'foo.array' => [
-                'foo' => 'bar',
+        config()->set(
+            [
+                'foo.array' => [
+                    'foo' => 'bar',
+                ],
             ],
-        ]);
+        );
 
         $dummy = app(DummyClass::class);
         $this->assertEquals(['foo' => 'bar'], $dummy->fooArray->value());
@@ -118,23 +133,27 @@ class PropertyNameAutowireTest extends TestCase
 
     public function testItDoesNotThrowAnExceptionWhenNullableStringConfigTypeIsNull(): void
     {
-        config()->set([
-            'foo.string' => null,
-            'foo.array' => null,
-            'foo.int' => null,
-        ]);
+        config()->set(
+            [
+                'foo.string' => null,
+                'foo.array' => null,
+                'foo.int' => null,
+            ],
+        );
 
         $dummy = app(NullableDummyClass::class);
-        $this->assertEquals('', (string)$dummy->fooString);
-        $this->assertEquals('', (string)$dummy->fooArray);
-        $this->assertEquals('', (string)$dummy->fooInt);
+        $this->assertEquals('', (string) $dummy->fooString);
+        $this->assertEquals('', (string) $dummy->fooArray);
+        $this->assertEquals('', (string) $dummy->fooInt);
     }
 
     public function testItSkipsUnTypedArguments(): void
     {
-        config()->set([
-            'foo.bar' => 'baz',
-        ]);
+        config()->set(
+            [
+                'foo.bar' => 'baz',
+            ],
+        );
 
         $dummy = app(NonTypedDummyClass::class);
         $this->assertEquals('default', $dummy->fooBar);
@@ -146,13 +165,14 @@ class PropertyNameAutowireTest extends TestCase
         $this->assertInstanceOf(DependencyWithNoConstructorArguments::class, $dummy);
     }
 
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        config()->set([
-            'autowire-configs.strategy' => PropNameStrategy::class,
-        ]);
+        config()->set(
+            [
+                'autowire-configs.strategy' => PropNameStrategy::class,
+            ],
+        );
     }
 }

@@ -15,7 +15,6 @@ class NullableDummyClass implements AutowiresConfigs
         public NullableStringConfig $fooString,
         public NullableArrayConfig $fooArray,
         public NullableIntegerConfig $fooInt,
-    )
-    {
+    ) {
     }
 }

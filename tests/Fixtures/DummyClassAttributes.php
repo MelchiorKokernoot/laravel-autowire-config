@@ -24,8 +24,7 @@ class DummyClassAttributes implements AutowiresConfigs
         #[BooleanConfig('test.boolean')]
         public BooleanConfig $testBoolean,
         public DummyDependency $dummyDependency,
-    )
-    {
+    ) {
     }
 
     public function getAppName(): string

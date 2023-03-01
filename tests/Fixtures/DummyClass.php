@@ -19,8 +19,7 @@ class DummyClass implements AutowiresConfigs
         public ArrayConfig $fooArray,
         public BooleanConfig $testBoolean,
         public DummyDependency $dummyDependency,
-    )
-    {
+    ) {
     }
 
     public function getAppName(): string

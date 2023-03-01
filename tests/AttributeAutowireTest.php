@@ -20,23 +20,16 @@ use function config;
 
 class AttributeAutowireTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        config()->set([
-            'autowire-configs.strategy' => AttributeStrategy::class,
-        ]);
-    }
-
     public function testItInjectsTheConfigBasedOnConstructorArgumentAttributes(): void
     {
-        config()->set([
-            'app.name' => 'nice-app',
-            'foo.bar' => 'baz',
-            'test.integer' => 1,
-            'test.boolean' => true,
-        ]);
+        config()->set(
+            [
+                'app.name' => 'nice-app',
+                'foo.bar' => 'baz',
+                'test.integer' => 1,
+                'test.boolean' => true,
+            ],
+        );
 
         $dummy = app(DummyClassAttributes::class);
         $this->assertEquals('nice-app', $dummy->getAppName());
@@ -47,11 +40,13 @@ class AttributeAutowireTest extends TestCase
 
     public function testItReturnsAnArrayWhenUsingArrayConfigTypeHint(): void
     {
-        config()->set([
-            'foo.array' => [
-                'foo' => 'bar',
+        config()->set(
+            [
+                'foo.array' => [
+                    'foo' => 'bar',
+                ],
             ],
-        ]);
+        );
 
         $dummy = app(DummyClassAttributes::class);
         $this->assertEquals(['foo' => 'bar'], $dummy->fooArray->value());
@@ -59,9 +54,11 @@ class AttributeAutowireTest extends TestCase
 
     public function testNullableArray(): void
     {
-        config()->set([
-            'foo.array' => null,
-        ]);
+        config()->set(
+            [
+                'foo.array' => null,
+            ],
+        );
 
         $dummy = app(NullableDummyClass::class);
         $this->assertNull($dummy->fooArray->value());
@@ -69,11 +66,13 @@ class AttributeAutowireTest extends TestCase
 
     public function testShorthandValueGetter(): void
     {
-        config()->set([
-            'foo.array' => [
-                'foo' => 'bar',
+        config()->set(
+            [
+                'foo.array' => [
+                    'foo' => 'bar',
+                ],
             ],
-        ]);
+        );
 
         $dummy = app(DummyClassAttributes::class);
         $this->assertEquals(['foo' => 'bar'], $dummy->fooArray->v());
@@ -87,10 +86,12 @@ class AttributeAutowireTest extends TestCase
 
     public function testItThrowsAnExceptionWhenStringConfigTypeIsNull(): void
     {
-        config()->set([
-            'foo.bar' => null,
-            'test.integer' => 1,
-        ]);
+        config()->set(
+            [
+                'foo.bar' => null,
+                'test.integer' => 1,
+            ],
+        );
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected a string. Got: NULL');
@@ -103,11 +104,13 @@ class AttributeAutowireTest extends TestCase
 
     public function testItThrowsARuntimeExceptionWhenTryingToCastArrayToString(): void
     {
-        config()->set([
-            'foo.array' => [
-                'foo' => 'bar',
+        config()->set(
+            [
+                'foo.array' => [
+                    'foo' => 'bar',
+                ],
             ],
-        ]);
+        );
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Cannot convert value to string');
@@ -117,11 +120,13 @@ class AttributeAutowireTest extends TestCase
 
     public function testItDoesNotThrowAnExceptionWhenAccessingTheValueUnwrapperOnArray(): void
     {
-        config()->set([
-            'foo.array' => [
-                'foo' => 'bar',
+        config()->set(
+            [
+                'foo.array' => [
+                    'foo' => 'bar',
+                ],
             ],
-        ]);
+        );
 
         $dummy = app(DummyClassAttributes::class);
         $this->assertEquals(['foo' => 'bar'], $dummy->fooArray->value());
@@ -130,11 +135,13 @@ class AttributeAutowireTest extends TestCase
 
     public function testItDoesNotThrowAnExceptionWhenNullableStringConfigTypeIsNull(): void
     {
-        config()->set([
-            'foo.string' => null,
-            'foo.array' => null,
-            'foo.int' => null,
-        ]);
+        config()->set(
+            [
+                'foo.string' => null,
+                'foo.array' => null,
+                'foo.int' => null,
+            ],
+        );
 
         $dummy = app(NullableDummyClass::class);
         $this->assertEquals('', (string) $dummy->fooString);
@@ -144,9 +151,11 @@ class AttributeAutowireTest extends TestCase
 
     public function testItThrowsAnExceptionWithMultipleAttributeArgs(): void
     {
-        config()->set([
-            'foo.bar' => 'baz',
-        ]);
+        config()->set(
+            [
+                'foo.bar' => 'baz',
+            ],
+        );
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('ConfigValueWrapper attribute must have exactly one argument');
@@ -156,9 +165,11 @@ class AttributeAutowireTest extends TestCase
 
     public function testItSkipsUnTypedArguments(): void
     {
-        config()->set([
-            'foo.bar' => 'baz',
-        ]);
+        config()->set(
+            [
+                'foo.bar' => 'baz',
+            ],
+        );
 
         $dummy = app(NonTypedDummyClass::class);
         $this->assertEquals('default', $dummy->fooBar);
@@ -168,6 +179,17 @@ class AttributeAutowireTest extends TestCase
     {
         $dummy = app(DependencyWithNoConstructorArguments::class);
         $this->assertInstanceOf(DependencyWithNoConstructorArguments::class, $dummy);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set(
+            [
+                'autowire-configs.strategy' => AttributeStrategy::class,
+            ],
+        );
     }
 }
 
