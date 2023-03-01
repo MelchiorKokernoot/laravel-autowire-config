@@ -49,7 +49,7 @@ abstract class ConfigValueWrapper
     /**
      * @unused array $arguments
      */
-    public function __get(string $name, array $arguments): mixed
+    public function __get(string $name): mixed
     {
         if ($name !== self::V) {
             return null;
