@@ -9,9 +9,10 @@
 Enable laravel configuration injection through auto-wired constructor arguments.
 
 ```php
-class Foo implements AutowiresConfigs{
+class Foo {
     public function __construct(
-        public StringConfig $appName,
+        #[Config('app.name')]
+        public string $myConfiguredAppName,
     ){}
 }
 ```
@@ -33,6 +34,11 @@ You can publish the config file with:
 php artisan vendor:publish --provider="MelchiorKokernoot\LaravelAutowireConfig\LaravelAutowireConfigServiceProvider"
 ```
 
+
+> Note that it is not necessary to publish the config file, nor is it necessary to configure the package.
+Only change the config file when you know why you are doing it.
+
+
 This is the contents of the published config file:
 
 ```php
@@ -49,11 +55,63 @@ You can choose between two strategies:
 
 More on the strategies below.
 
-## Usage
+## Usage 
+### Usage through Custom Application class (Recommended)
+
+Starting from version 3.0.0, the package can be used through a custom `Application` class. This is the recommended way
+of using the package, as it will offer a more "natural" way of using the package.
+
+The only thing one needs to do to enable this behaviour, is to swap out the default `Application` class in
+bootstrap/app.php
+with the `MelchiorKokernoot\LaravelAutowireConfig\Application` class.
+
+So change this:
+
+```php
+$app = new Illuminate\Foundation\Application(
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__),
+);
+```
+
+Into this:
+
+```php
+use MelchiorKokernoot\LaravelAutowireConfig\Application;
+
+$app = new Application(
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__),
+);
+```
+
+Advantages of using the custom application class:
+
+- Allows for primitive datatypes (int, float, bool, string) to be injected directly into the constructor, without a
+  default value. No more need for wrapping the config value in a typed config class!
+- Allows using readonly properties in the constructor
+
+Currently this only works with the attribute strategy, but you do not need to configure this. Once you start using the
+new `Application` class, the package will automatically disable old way of using the package, so no resources are wasted
+on duplicate resolution.
+
+To demonstrate this, let's take a look at the following example:
+
+```php
+class Foo {
+    public function __construct(
+        #[Config('app.name')]
+        public string $myConfiguredAppName,
+    ){}
+}
+```
+
+When resolving this `Foo` class from the container, the package will automatically resolve the config value for
+`app.name` and inject it into the `$myConfiguredAppName` property.
+
+### Usage through Service provider
 
 Starting from Version 2.0.0 the package can be used in two ways:
 
-### Usage through attribute autowiring (AttributeStrategy)
+#### Usage through attribute autowiring (AttributeStrategy)
 
 Firstly, implement the `AutowiresConfigs` interface on your class.
 Typehint one of the [typed config classes](#typed-config-classes) in your constructor, and use that typehint as an
@@ -78,7 +136,7 @@ you do this:
 $foo = new Foo(config('app.name'));
 ```
 
-### Usage through constructor property name autowiring (PropNameStrategy)
+#### Usage through constructor property name autowiring (PropNameStrategy)
 
 Firstly, implement the `AutowiresConfigs` interface on your class.
 Typehint one of the [typed config classes](#typed-config-classes) in your constructor, and use the camelCase version of
@@ -105,7 +163,11 @@ $foo = new Foo(config('app.name'));
 The benefit of this, is that you keep a clear separation between your application logic and your configuration layer.
 No more service locators, no more `config()` calls in your code, just clean dependencies.
 
-## Accessing the config values
+#### Accessing the config values
+
+```
+This way of access is only required when NOT using the custom Application strategy
+```
 
 Because the config values are wrapped in a typed config class, you cannot access the value directly. Instead, you can
 access the value through the `value` method. For convenience, the `__toString` magic method is also implemented, so you
@@ -134,7 +196,7 @@ class Foo implements AutowiresConfigs{
 }
 ```
 
-## Typed config classes
+#### Typed config classes
 
 The following config classes are available:
 
@@ -146,7 +208,7 @@ The following config classes are available:
 - `NullableStringConfig`
 - `StringConfig`
 
-## Pitfalls
+#### Pitfalls
 
 This package hooks into the afterResolving callback, which means that it will only work for classes that are resolved
 through the container. This that the config values will only be populated after the constructor has been called, so the
@@ -160,7 +222,8 @@ composer test
 
 ## Roadmap
 
-- [ ] Add support for primitive types when using attribute autowiring
+- [X] Add support for primitive types when using the custom `Application` class
+- [X] Add support for readonly properties when using the custom `Application` class
 - [ ] Add support for configuring the way values should be unwrapped (disable shorthand `v()` for example)
 
 ## Changelog
