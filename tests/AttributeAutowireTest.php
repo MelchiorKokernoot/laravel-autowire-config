@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace MelchiorKokernoot\LaravelAutowireConfig\Tests;
 
+use AssertionError;
+use Illuminate\Support\Facades\Event;
 use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\StringConfig;
 use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
+use MelchiorKokernoot\LaravelAutowireConfig\Events\AfterAutowiring;
+use MelchiorKokernoot\LaravelAutowireConfig\Events\BeforeAutowiring;
 use MelchiorKokernoot\LaravelAutowireConfig\Strategies\AttributeStrategy;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DependencyWithNoConstructorArguments;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DummyClassAttributes;
@@ -13,7 +17,6 @@ use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DummyDependency;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NonTypedDummyClass;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NullableDummyClass;
 use RuntimeException;
-use Webmozart\Assert\InvalidArgumentException;
 
 use function app;
 use function config;
@@ -93,8 +96,8 @@ class AttributeAutowireTest extends TestCase
             ],
         );
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected a string. Got: NULL');
+        $this->expectException(AssertionError::class);
+        $this->expectExceptionMessage('assert(is_string($configValue))');
         $dummy = app(DummyClassAttributes::class);
 
         $this->assertEquals('', (string) $dummy->fooBar);
@@ -179,6 +182,18 @@ class AttributeAutowireTest extends TestCase
     {
         $dummy = app(DependencyWithNoConstructorArguments::class);
         $this->assertInstanceOf(DependencyWithNoConstructorArguments::class, $dummy);
+    }
+
+    public function testItDoesRegisterResolvingCallbackInsideTest(): void
+    {
+        $this->app->bind('env', static fn() => 'testing');
+        config()->set(['foo.bar' => 'bar']);
+        Event::fake();
+
+        app()->make(DummyClassAttributes::class);
+
+        Event::assertDispatched(BeforeAutowiring::class);
+        Event::assertDispatched(AfterAutowiring::class);
     }
 
     protected function setUp(): void

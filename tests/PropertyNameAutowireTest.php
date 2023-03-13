@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace MelchiorKokernoot\LaravelAutowireConfig\Tests;
 
+use AssertionError;
+use Illuminate\Support\Facades\Event;
+use MelchiorKokernoot\LaravelAutowireConfig\Events\AfterAutowiring;
+use MelchiorKokernoot\LaravelAutowireConfig\Events\BeforeAutowiring;
 use MelchiorKokernoot\LaravelAutowireConfig\Strategies\PropNameStrategy;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DependencyWithNoConstructorArguments;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DummyClass;
@@ -11,7 +15,6 @@ use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DummyDependency;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NonTypedDummyClass;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NullableDummyClass;
 use RuntimeException;
-use Webmozart\Assert\InvalidArgumentException;
 
 use function app;
 use function config;
@@ -91,8 +94,8 @@ class PropertyNameAutowireTest extends TestCase
             ],
         );
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected a string. Got: NULL');
+        $this->expectException(AssertionError::class);
+        $this->expectExceptionMessage('assert(is_string($configValue))');
         $dummy = app(DummyClass::class);
 
         $this->assertEquals('', (string) $dummy->fooBar);
@@ -163,6 +166,18 @@ class PropertyNameAutowireTest extends TestCase
     {
         $dummy = app(DependencyWithNoConstructorArguments::class);
         $this->assertInstanceOf(DependencyWithNoConstructorArguments::class, $dummy);
+    }
+
+    public function testItDoesRegisterResolvingCallbackInsideTest(): void
+    {
+        $this->app->bind('env', static fn() => 'testing');
+        config()->set(['foo.bar' => 'bar']);
+        Event::fake();
+
+        app()->make(DummyClass::class);
+
+        Event::assertDispatched(BeforeAutowiring::class);
+        Event::assertDispatched(AfterAutowiring::class);
     }
 
     protected function setUp(): void

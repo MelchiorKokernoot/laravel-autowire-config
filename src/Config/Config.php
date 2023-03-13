@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace MelchiorKokernoot\LaravelAutowireConfig\Config;
 
-use Webmozart\Assert\Assert;
+use Attribute;
 
+use function assert;
 use function config;
+use function is_array;
+use function is_bool;
+use function is_int;
+use function is_null;
+use function is_string;
 
+#[Attribute]
 final class Config
 {
     /**
@@ -17,7 +24,7 @@ final class Config
     {
         $configValue = self::get($key);
 
-        Assert::isArray($configValue);
+        assert(is_array($configValue));
 
         return $configValue;
     }
@@ -29,7 +36,7 @@ final class Config
     {
         $configValue = self::get($key);
 
-        Assert::nullOrIsArray($configValue);
+        assert(is_null($configValue) || is_array($configValue));
 
         return $configValue;
     }
@@ -38,7 +45,7 @@ final class Config
     {
         $configValue = self::get($key);
 
-        Assert::boolean($configValue);
+        assert(is_bool($configValue));
 
         return $configValue;
     }
@@ -47,16 +54,16 @@ final class Config
     {
         $configValue = self::get($key);
 
-        Assert::numeric($configValue);
+        assert(is_int($configValue));
 
-        return (int) $configValue;
+        return $configValue;
     }
 
     public static function integerOrNull(string $key): ?int
     {
         $configValue = self::get($key);
 
-        Assert::nullOrInteger($configValue);
+        assert(is_int($configValue) || is_null($configValue));
 
         return $configValue;
     }
@@ -65,7 +72,7 @@ final class Config
     {
         $configValue = self::get($key, $default);
 
-        Assert::string($configValue);
+        assert(is_string($configValue));
 
         return $configValue;
     }
@@ -74,7 +81,7 @@ final class Config
     {
         $configValue = self::get($key, $default);
 
-        Assert::nullOrString($configValue);
+        assert(is_string($configValue) || is_null($configValue));
 
         return $configValue;
     }
