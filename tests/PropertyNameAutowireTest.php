@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MelchiorKokernoot\LaravelAutowireConfig\Tests;
 
-use AssertionError;
 use Illuminate\Support\Facades\Event;
 use MelchiorKokernoot\LaravelAutowireConfig\Events\AfterAutowiring;
 use MelchiorKokernoot\LaravelAutowireConfig\Events\BeforeAutowiring;
@@ -15,8 +14,8 @@ use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DummyDependency;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NonTypedDummyClass;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NullableDummyClass;
 use RuntimeException;
-
 use TypeError;
+
 use function app;
 use function config;
 
@@ -181,14 +180,14 @@ class PropertyNameAutowireTest extends TestCase
         Event::assertDispatched(AfterAutowiring::class);
     }
 
-    public function testItSkipsClassesWithoutAutowiresConfigsInterface()
+    public function testItSkipsClassesWithoutAutowiresConfigsInterface(): void
     {
         Event::fake();
         $this->app->get(DummyDependency::class);
         Event::assertNotDispatched(BeforeAutowiring::class);
     }
 
-    public function testItDoesNotSkipClassesWithAutowiresConfigsInterface()
+    public function testItDoesNotSkipClassesWithAutowiresConfigsInterface(): void
     {
         Event::fake();
         $this->app->get(DummyClass::class);

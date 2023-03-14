@@ -6,11 +6,11 @@ namespace MelchiorKokernoot\LaravelAutowireConfig\Tests;
 
 use MelchiorKokernoot\LaravelAutowireConfig\Config\Config;
 use TypeError;
+
 use function config;
 
 class ConfigTest extends TestCase
 {
-
     public function testItThrowsAnExceptionWhenArrayIsNotArray(): void
     {
         config()->set(['foo' => 'bar']);
@@ -35,7 +35,7 @@ class ConfigTest extends TestCase
         Config::arrayOrNull('foo');
     }
 
-    public function testItThrowsAnErrorWhenStringIsNotString()
+    public function testItThrowsAnErrorWhenStringIsNotString(): void
     {
         config()->set(['foo' => 1]);
         $this->expectException(TypeError::class);
@@ -44,7 +44,7 @@ class ConfigTest extends TestCase
         Config::string('foo');
     }
 
-    public function testItDoesNotThrowAnExceptionWhenStringIsString()
+    public function testItDoesNotThrowAnExceptionWhenStringIsString(): void
     {
         config()->set(['foo' => 'bar']);
         $this->assertIsString(Config::string('foo'));
@@ -59,7 +59,7 @@ class ConfigTest extends TestCase
         Config::stringOrNull('foo');
     }
 
-    public function testItDoesNotThrowAnExceptionWhenStringOrNullIsStringOrNull()
+    public function testItDoesNotThrowAnExceptionWhenStringOrNullIsStringOrNull(): void
     {
         config()->set(['foo' => 'bar']);
         $this->assertIsString(Config::stringOrNull('foo'));
@@ -68,7 +68,7 @@ class ConfigTest extends TestCase
         $this->assertNull(Config::stringOrNull('foo'));
     }
 
-    public function testItThrowsAnExceptionWhenIntegerOrNullIsNotIntegerOrNull()
+    public function testItThrowsAnExceptionWhenIntegerOrNullIsNotIntegerOrNull(): void
     {
         config()->set(['foo' => 'bar']);
         $this->expectException(TypeError::class);
@@ -77,7 +77,7 @@ class ConfigTest extends TestCase
         Config::integerOrNull('foo');
     }
 
-    public function testItDoesNotThrowAnExceptionWhenIntegerOrNullIsIntegerOrNull()
+    public function testItDoesNotThrowAnExceptionWhenIntegerOrNullIsIntegerOrNull(): void
     {
         config()->set(['foo' => 1]);
         $this->assertIsInt(Config::integerOrNull('foo'));
@@ -86,7 +86,7 @@ class ConfigTest extends TestCase
         $this->assertNull(Config::integerOrNull('foo'));
     }
 
-    public function testItThrowsAnExceptionWhenIntegerIsNotInteger()
+    public function testItThrowsAnExceptionWhenIntegerIsNotInteger(): void
     {
         config()->set(['foo' => 'bar']);
         $this->expectException(TypeError::class);
@@ -95,14 +95,14 @@ class ConfigTest extends TestCase
         Config::integer('foo');
     }
 
-    public function testItDoesNotThrowAnExceptionWhenIntegerIsInteger()
+    public function testItDoesNotThrowAnExceptionWhenIntegerIsInteger(): void
     {
         config()->set(['foo' => 1]);
         Config::integer('foo');
         $this->assertIsInt(Config::integer('foo'));
     }
 
-    public function testItThrowsAnExceptionWhenBooleanIsNotBoolean()
+    public function testItThrowsAnExceptionWhenBooleanIsNotBoolean(): void
     {
         config()->set(['foo' => 'bar']);
         $this->expectException(TypeError::class);
@@ -111,7 +111,7 @@ class ConfigTest extends TestCase
         Config::boolean('foo');
     }
 
-    public function testItDoesNotThrowExceptionWhenBooleanIsBoolean()
+    public function testItDoesNotThrowExceptionWhenBooleanIsBoolean(): void
     {
         config()->set(['foo' => true]);
         $this->assertTrue(Config::boolean('foo'));

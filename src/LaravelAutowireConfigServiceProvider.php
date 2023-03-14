@@ -11,7 +11,7 @@ use MelchiorKokernoot\LaravelAutowireConfig\Events\BeforeAutowiring;
 use MelchiorKokernoot\LaravelAutowireConfig\Events\RegisteredAutowiringCallback;
 use MelchiorKokernoot\LaravelAutowireConfig\Strategies\PropNameStrategy;
 use ReflectionClass;
-use function assert;
+
 use function config;
 use function config_path;
 

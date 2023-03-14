@@ -6,7 +6,9 @@ namespace MelchiorKokernoot\LaravelAutowireConfig\Config;
 
 use Attribute;
 use TypeError;
+
 use function config;
+use function gettype;
 use function is_array;
 use function is_bool;
 use function is_int;
@@ -71,7 +73,7 @@ final class Config
         $configValue = self::get($key);
 
         if (!is_int($configValue) && !is_null($configValue)) {
-            throw new TypeError('Expected config value of type integerOrNull and got: ' .gettype($configValue));
+            throw new TypeError('Expected config value of type integerOrNull and got: ' . gettype($configValue));
         }
 
         return $configValue;

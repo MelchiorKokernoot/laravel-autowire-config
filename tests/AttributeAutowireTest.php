@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MelchiorKokernoot\LaravelAutowireConfig\Tests;
 
-use AssertionError;
 use Illuminate\Support\Facades\Event;
 use MelchiorKokernoot\LaravelAutowireConfig\Config\Types\StringConfig;
 use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
@@ -17,8 +16,8 @@ use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\DummyDependency;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NonTypedDummyClass;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NullableDummyClass;
 use RuntimeException;
-
 use TypeError;
+
 use function app;
 use function config;
 
