@@ -18,6 +18,12 @@ use function is_string;
 #[Attribute]
 final class Config
 {
+    public function __construct(
+        private readonly string $key = ''
+    )
+    {
+    }
+
     /**
      * @return array<mixed> The shape of the array is not known, so we use mixed
      */
