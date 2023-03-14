@@ -11,7 +11,6 @@ use MelchiorKokernoot\LaravelAutowireConfig\Events\BeforeAutowiring;
 use MelchiorKokernoot\LaravelAutowireConfig\Events\RegisteredAutowiringCallback;
 use MelchiorKokernoot\LaravelAutowireConfig\Strategies\PropNameStrategy;
 use ReflectionClass;
-
 use function assert;
 use function config;
 use function config_path;
@@ -45,8 +44,7 @@ class LaravelAutowireConfigServiceProvider extends ServiceProvider
 
         $this->app->resolving(
             AutowiresConfigs::class,
-            static function (object|string $object, $app): void {
-                assert($object instanceof AutowiresConfigs);
+            static function (AutowiresConfigs $object, $app): void {
                 $reflection = new ReflectionClass($object);
                 $reflectionParameters = $reflection->getConstructor()?->getParameters();
 

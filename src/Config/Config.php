@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace MelchiorKokernoot\LaravelAutowireConfig\Config;
 
 use Attribute;
-
-use function assert;
+use TypeError;
 use function config;
 use function is_array;
 use function is_bool;
@@ -24,7 +23,9 @@ final class Config
     {
         $configValue = self::get($key);
 
-        assert(is_array($configValue));
+        if (!is_array($configValue)) {
+            throw new TypeError('Expected config value of type array and got: ' . gettype($configValue));
+        }
 
         return $configValue;
     }
@@ -36,7 +37,9 @@ final class Config
     {
         $configValue = self::get($key);
 
-        assert(is_null($configValue) || is_array($configValue));
+        if (!is_null($configValue) && !is_array($configValue)) {
+            throw new TypeError('Expected config value of type arrayOrNull and got: ' . gettype($configValue));
+        }
 
         return $configValue;
     }
@@ -45,7 +48,9 @@ final class Config
     {
         $configValue = self::get($key);
 
-        assert(is_bool($configValue));
+        if (!is_bool($configValue)) {
+            throw new TypeError('Expected config value of type boolean and got: ' . gettype($configValue));
+        }
 
         return $configValue;
     }
@@ -54,7 +59,9 @@ final class Config
     {
         $configValue = self::get($key);
 
-        assert(is_int($configValue));
+        if (!is_int($configValue)) {
+            throw new TypeError('Expected config value of type integer and got: ' . gettype($configValue));
+        }
 
         return $configValue;
     }
@@ -63,7 +70,9 @@ final class Config
     {
         $configValue = self::get($key);
 
-        assert(is_int($configValue) || is_null($configValue));
+        if (!is_int($configValue) && !is_null($configValue)) {
+            throw new TypeError('Expected config value of type integerOrNull and got: ' .gettype($configValue));
+        }
 
         return $configValue;
     }
@@ -72,7 +81,9 @@ final class Config
     {
         $configValue = self::get($key, $default);
 
-        assert(is_string($configValue));
+        if (!is_string($configValue)) {
+            throw new TypeError('Expected config value of type string and got: ' . gettype($configValue));
+        }
 
         return $configValue;
     }
@@ -81,7 +92,9 @@ final class Config
     {
         $configValue = self::get($key, $default);
 
-        assert(is_string($configValue) || is_null($configValue));
+        if (!is_string($configValue) && !is_null($configValue)) {
+            throw new TypeError('Expected config value of type stringOrNull and got: ' . gettype($configValue));
+        }
 
         return $configValue;
     }

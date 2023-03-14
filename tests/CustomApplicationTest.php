@@ -76,7 +76,7 @@ class CustomApplicationTest extends CustomApplicationTestCase
         Event::assertNotDispatched(AfterAutowiring::class);
     }
 
-    public function testItDoesNotRegisterResolivin(): void
+    public function testItDoesNotRegisterResolivingCallBackWhenApplicationIsCustomAppicationAndEnvIsNotTest(): void
     {
         $this->app->bind('env', static fn() => 'production');
         $provider = $this->app->make(LaravelAutowireConfigServiceProvider::class, ['app' => $this->app]);
@@ -84,6 +84,17 @@ class CustomApplicationTest extends CustomApplicationTestCase
         Event::fake();
         $provider->boot();
         Event::assertNotDispatched(RegisteredAutowiringCallback::class);
+    }
+
+    public function testItDoesRegisterResolivingCallBackWhenApplicationIsCustomAppicationAndEnvIsTest(): void
+    {
+        $this->app->bind('env', static fn() => 'testing');
+        config()->set(['env' => 'testing']);
+        $provider = $this->app->make(LaravelAutowireConfigServiceProvider::class, ['app' => $this->app]);
+
+        Event::fake();
+        $provider->boot();
+        Event::assertDispatched(RegisteredAutowiringCallback::class);
     }
 }
 

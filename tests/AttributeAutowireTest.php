@@ -18,6 +18,7 @@ use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NonTypedDummyClass;
 use MelchiorKokernoot\LaravelAutowireConfig\Tests\Fixtures\NullableDummyClass;
 use RuntimeException;
 
+use TypeError;
 use function app;
 use function config;
 
@@ -96,8 +97,8 @@ class AttributeAutowireTest extends TestCase
             ],
         );
 
-        $this->expectException(AssertionError::class);
-        $this->expectExceptionMessage('assert(is_string($configValue))');
+        $this->expectException(TypeError::class);
+        $this->expectExceptionMessage('Expected config value of type string and got: NULL');
         $dummy = app(DummyClassAttributes::class);
 
         $this->assertEquals('', (string) $dummy->fooBar);
