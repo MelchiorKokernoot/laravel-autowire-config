@@ -19,6 +19,7 @@ use function is_string;
 final class Config
 {
     public function __construct(
+        /** @phpstan-ignore-next-line property is never read, but needed for allowing parameters on the attribute */
         private readonly string $key = ''
     )
     {
