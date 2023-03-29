@@ -7,10 +7,14 @@ namespace MelchiorKokernoot\LaravelAutowireConfig\Strategies;
 use Closure;
 use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 
 abstract class AutowiringStrategy
 {
+    /**
+     * @throws ReflectionException
+     */
     abstract public function wire(AutowiresConfigs $instance, ReflectionClass $reflection): void;
 
     /**
