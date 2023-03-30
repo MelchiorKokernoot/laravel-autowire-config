@@ -13,6 +13,7 @@ use ReflectionProperty;
 abstract class AutowiringStrategy
 {
     /**
+     * @param ReflectionClass<AutowiresConfigs> $reflection
      * @throws ReflectionException
      */
     abstract public function wire(AutowiresConfigs $instance, ReflectionClass $reflection): void;
