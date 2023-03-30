@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rule name="Code050_Dist">
+    <description>Distributable config for code050 standard</description>
+    <arg value="sp"/>
+    <arg name="colors"/>
+    <arg name="cache" value=".phpcs.cache"/>
+    <arg name="extensions" value="php"/>
+    <file>.</file>
+    <rule ref="vendor/code050/codestyle/src/Services/php-code-sniffer/phpcs.xml">
+        <exclude name="SlevomatCodingStandard.Files.TypeNameMatchesFileName.NoMatchBetweenTypeNameAndFileName"/>
+        <exclude name="SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh"/>
+    </rule>
+
+    <!--Adjust project specific preferences below-->
+
+</rule>
