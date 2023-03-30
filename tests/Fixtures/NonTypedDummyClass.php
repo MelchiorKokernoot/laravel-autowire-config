@@ -9,6 +9,7 @@ use MelchiorKokernoot\LaravelAutowireConfig\Contracts\AutowiresConfigs;
 
 class NonTypedDummyClass implements AutowiresConfigs
 {
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint -- baseline
     public function __construct(
         #[NonTypedConfig('foo.bar')]
         public $fooBar = 'default',

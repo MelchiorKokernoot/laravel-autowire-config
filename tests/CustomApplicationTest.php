@@ -39,11 +39,13 @@ class CustomApplicationTest extends CustomApplicationTestCase
         $this->app->make('test');
     }
 
+    // phpcs:ignore Generic.Files.LineLength.TooLong -- baseline
     public function testItSkipsWhenPrimitiveHasNoDefaultAndAttributeIsNotConfigOrConfigValueWrapperAndAttributeHasMultipleParams(): void
     {
         $this->app->bind('test', RealAttributeNoParams::class);
         $this->expectException(BindingResolutionException::class);
         $this->expectExceptionMessage(
+            // phpcs:ignore Generic.Files.LineLength.TooLong -- baseline
             'Unresolvable dependency resolving [Parameter #0 [ <required> string $string ]] in class MelchiorKokernoot\LaravelAutowireConfig\Tests\RealAttributeNoParams',
         );
         $this->app->make('test');
@@ -99,6 +101,7 @@ class CustomApplicationTest extends CustomApplicationTestCase
     }
 }
 
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses, Squiz.Classes.ClassFileName.NoMatch -- baseline
 class FakeAttribute
 {
     public function __construct(
@@ -109,6 +112,7 @@ class FakeAttribute
     }
 }
 
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses, Squiz.Classes.ClassFileName.NoMatch -- baseline
 class RealAttributeNoParams
 {
     public function __construct(
@@ -119,8 +123,10 @@ class RealAttributeNoParams
     }
 }
 
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses, Squiz.Classes.ClassFileName.NoMatch -- baseline
 class ConfigAttribute
 {
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification -- baseline
     public function __construct(
         #[Config('foo.bar')]
         public string $string,
@@ -137,8 +143,10 @@ class ConfigAttribute
     }
 }
 
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses, Squiz.Classes.ClassFileName.NoMatch -- baseline
 class ConfigAttributeWithDefaults
 {
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification -- baseline
     public function __construct(
         #[Config('foo.bar')]
         public string $string = 'default',
