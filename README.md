@@ -98,7 +98,7 @@ To demonstrate this, let's take a look at the following example:
 ```php
 class Foo {
     public function __construct(
-        #[Config('app.name')]
+        #[Config('app.name','default value')]
         public string $myConfiguredAppName,
     ){}
 }

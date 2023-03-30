@@ -28,7 +28,7 @@ class Application extends \Illuminate\Foundation\Application
             //but we can get the parameter value from the config helper
             $wiredConfigValue = $this->getPropertyValue($parameter);
 
-            if (!$wiredConfigValue) {
+            if ($wiredConfigValue === null) {
                 throw $e;
             }
 
@@ -38,20 +38,9 @@ class Application extends \Illuminate\Foundation\Application
 
     private function getPropertyValue(ReflectionParameter $parameter): mixed
     {
-        foreach ($parameter->getAttributes() as $attribute) {
-            $attributeName = $attribute->getName();
-
-            if ($attributeName !== Config::class && $attributeName !== ConfigValueWrapper::class) {
-                continue;
-            }
-
-            if (count($attribute->getArguments()) !== 1) {
-                throw new RuntimeException('ConfigValueWrapper attribute must have exactly one argument');
-            }
-
-            $configKey = $attribute->getArguments()[0];
-
-            return config($configKey);
+        foreach ($parameter->getAttributes(Config::class) as $attribute) {
+            $instance = $attribute->newInstance();
+            return config($instance->key, $instance->default);
         }
 
         return null;

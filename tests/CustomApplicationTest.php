@@ -13,6 +13,7 @@ use MelchiorKokernoot\LaravelAutowireConfig\Events\RegisteredAutowiringCallback;
 use MelchiorKokernoot\LaravelAutowireConfig\LaravelAutowireConfigServiceProvider;
 use RuntimeException;
 
+use TypeError;
 use function app;
 use function config;
 
@@ -42,9 +43,9 @@ class CustomApplicationTest extends CustomApplicationTestCase
 
     public function testItSkipsWhenPrimitiveHasNoDefaultAndAttributeIsNotConfigOrConfigValueWrapperAndAttributeHasMultipleParams(): void
     {
-        $this->app->bind('test', RealAttributeMultipleParams::class);
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage("ConfigValueWrapper attribute must have exactly one argument");
+        $this->app->bind('test', RealAttributeNoParams::class);
+        $this->expectException(BindingResolutionException::class);
+        $this->expectExceptionMessage('Unresolvable dependency resolving [Parameter #0 [ <required> string $string ]] in class MelchiorKokernoot\LaravelAutowireConfig\Tests\RealAttributeNoParams');
         $this->app->make('test');
     }
 
@@ -108,21 +109,10 @@ class FakeAttribute
     }
 }
 
-class RealAttributeMultipleParams
+class RealAttributeNoParams
 {
     public function __construct(
-        #[Config('', '')]
-        public string $string,
-    )
-    {
-    }
-}
-
-
-class SinglePropWithCorrectAttribute
-{
-    public function __construct(
-        #[Config('foo.bar')]
+        #[Config()]
         public string $string,
     )
     {
