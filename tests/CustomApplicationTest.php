@@ -11,9 +11,7 @@ use MelchiorKokernoot\LaravelAutowireConfig\Events\AfterAutowiring;
 use MelchiorKokernoot\LaravelAutowireConfig\Events\BeforeAutowiring;
 use MelchiorKokernoot\LaravelAutowireConfig\Events\RegisteredAutowiringCallback;
 use MelchiorKokernoot\LaravelAutowireConfig\LaravelAutowireConfigServiceProvider;
-use RuntimeException;
 
-use TypeError;
 use function app;
 use function config;
 
@@ -45,7 +43,9 @@ class CustomApplicationTest extends CustomApplicationTestCase
     {
         $this->app->bind('test', RealAttributeNoParams::class);
         $this->expectException(BindingResolutionException::class);
-        $this->expectExceptionMessage('Unresolvable dependency resolving [Parameter #0 [ <required> string $string ]] in class MelchiorKokernoot\LaravelAutowireConfig\Tests\RealAttributeNoParams');
+        $this->expectExceptionMessage(
+            'Unresolvable dependency resolving [Parameter #0 [ <required> string $string ]] in class MelchiorKokernoot\LaravelAutowireConfig\Tests\RealAttributeNoParams',
+        );
         $this->app->make('test');
     }
 

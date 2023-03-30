@@ -6,12 +6,9 @@ namespace MelchiorKokernoot\LaravelAutowireConfig;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use MelchiorKokernoot\LaravelAutowireConfig\Config\Config;
-use MelchiorKokernoot\LaravelAutowireConfig\Config\ConfigValueWrapper;
 use ReflectionParameter;
-use RuntimeException;
 
 use function config;
-use function count;
 
 class Application extends \Illuminate\Foundation\Application
 {
