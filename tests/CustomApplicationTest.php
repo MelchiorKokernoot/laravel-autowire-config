@@ -11,7 +11,6 @@ use MelchiorKokernoot\LaravelAutowireConfig\Events\AfterAutowiring;
 use MelchiorKokernoot\LaravelAutowireConfig\Events\BeforeAutowiring;
 use MelchiorKokernoot\LaravelAutowireConfig\Events\RegisteredAutowiringCallback;
 use MelchiorKokernoot\LaravelAutowireConfig\LaravelAutowireConfigServiceProvider;
-use RuntimeException;
 
 use function app;
 use function config;
@@ -40,11 +39,15 @@ class CustomApplicationTest extends CustomApplicationTestCase
         $this->app->make('test');
     }
 
+    // phpcs:ignore Generic.Files.LineLength.TooLong -- baseline
     public function testItSkipsWhenPrimitiveHasNoDefaultAndAttributeIsNotConfigOrConfigValueWrapperAndAttributeHasMultipleParams(): void
     {
-        $this->app->bind('test', RealAttributeMultipleParams::class);
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage("ConfigValueWrapper attribute must have exactly one argument");
+        $this->app->bind('test', RealAttributeNoParams::class);
+        $this->expectException(BindingResolutionException::class);
+        $this->expectExceptionMessage(
+            // phpcs:ignore Generic.Files.LineLength.TooLong -- baseline
+            'Unresolvable dependency resolving [Parameter #0 [ <required> string $string ]] in class MelchiorKokernoot\LaravelAutowireConfig\Tests\RealAttributeNoParams',
+        );
         $this->app->make('test');
     }
 
@@ -98,6 +101,7 @@ class CustomApplicationTest extends CustomApplicationTestCase
     }
 }
 
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses, Squiz.Classes.ClassFileName.NoMatch -- baseline
 class FakeAttribute
 {
     public function __construct(
@@ -108,29 +112,21 @@ class FakeAttribute
     }
 }
 
-class RealAttributeMultipleParams
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses, Squiz.Classes.ClassFileName.NoMatch -- baseline
+class RealAttributeNoParams
 {
     public function __construct(
-        #[Config('', '')]
+        #[Config()]
         public string $string,
     )
     {
     }
 }
 
-
-class SinglePropWithCorrectAttribute
-{
-    public function __construct(
-        #[Config('foo.bar')]
-        public string $string,
-    )
-    {
-    }
-}
-
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses, Squiz.Classes.ClassFileName.NoMatch -- baseline
 class ConfigAttribute
 {
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification -- baseline
     public function __construct(
         #[Config('foo.bar')]
         public string $string,
@@ -147,8 +143,10 @@ class ConfigAttribute
     }
 }
 
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses, Squiz.Classes.ClassFileName.NoMatch -- baseline
 class ConfigAttributeWithDefaults
 {
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification -- baseline
     public function __construct(
         #[Config('foo.bar')]
         public string $string = 'default',

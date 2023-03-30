@@ -11,6 +11,7 @@ use function tap;
 
 class CustomApplicationTestCase extends TestCase
 {
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint -- baseline
     protected function resolveApplication()
     {
         return tap(new Application($this->getBasePath()), function ($app): void {
