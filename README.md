@@ -17,7 +17,6 @@ class Foo {
 }
 ```
 
-- [Configuration autowiring and injection](#configuration-autowiring-and-injection)
   * [Installation](#installation)
   * [Configuration](#configuration)
   * [Usage](#usage)
