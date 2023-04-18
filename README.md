@@ -17,6 +17,26 @@ class Foo {
 }
 ```
 
+- [Configuration autowiring and injection](#configuration-autowiring-and-injection)
+  * [Installation](#installation)
+  * [Configuration](#configuration)
+  * [Usage](#usage)
+    + [Usage through Custom Application class (Recommended)](#usage-through-custom-application-class-recommended)
+    + [Usage through Service provider](#usage-through-service-provider)
+      - [Usage through attribute autowiring (AttributeStrategy)](#usage-through-attribute-autowiring-attributestrategy)
+      - [Usage through constructor property name autowiring (PropNameStrategy)](usage-through-constructor-property-name-autowiring-propnamestrategy)
+      - [Accessing the config values](#accessing-the-config-values)
+      - [Typed config classes](#typed-config-classes)
+      - [Pitfalls](#pitfalls)
+  * [Testing](#testing)
+  * [Roadmap](#roadmap)
+  * [Changelog](#changelog)
+  * [Contributing](#contributing)
+  * [Security Vulnerabilities](#security-vulnerabilities)
+  * [Credits](#credits)
+  * [License](#license)
+
+
 ## Installation
 
 You can install the package via composer:
