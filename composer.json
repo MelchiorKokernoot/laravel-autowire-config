@@ -17,7 +17,8 @@
     ],
     "require": {
         "php": "^8.1",
-        "illuminate/contracts": ">=9.0"
+        "illuminate/contracts": ">=9.0",
+        "illuminate/support": ">=9.0"
     },
     "require-dev": {
         "code050/codestyle": "^1.0",
@@ -43,11 +44,7 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
-        "analyse": "vendor/bin/phpstan analyse",
-        "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint"
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi"
     },
     "config": {
         "sort-packages": true,
